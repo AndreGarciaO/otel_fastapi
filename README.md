@@ -61,7 +61,7 @@ pip install -r requirements.txt
 ```
         uvicorn app.service_b.main:app --port 8001
 ```
-9.- Abre otra terminal y haz lo mismo pero cambia el nombre del servicio
+9.- Abre otra terminal y haz lo mismo pero cambia el nombre del servicio, asegurate de inciar el venv en la nueva terminal.
 ```
 	export OTEL_SERVICE_NAME=service-a
     export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
