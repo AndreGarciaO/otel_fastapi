@@ -22,19 +22,24 @@ sudo apt-get install python3-virtualenv
 git clone https://github.com/AndreGarciaO/otel_fastapi.git
 ```
 
-3.- Instala las dependencias con el siguiente comando:
+3.- Active tu venv con el siguiente comando
+```
+source venv/bin/activate
+```
+
+4.- Instala las dependencias con el siguiente comando:
 ```
 pip install -r requirements.txt
 ```
 
-4.- Exporta las variables del tenant y su token
+5.- Exporta las variables del tenant y su token
 
 ```
 	export DT_ENDPOINT=
 	export DT_API_TOKEN=
 ```
 
-5.- Levanta tu collector:
+6.- Levanta tu collector:
 ```
 	docker run -d \
   --name otel-collector \
@@ -47,30 +52,30 @@ pip install -r requirements.txt
 
 ```
 
-6.- En una consola exporta las variables del nombre del servicio y el endpoint del colector
+7.- En una consola exporta las variables del nombre del servicio y el endpoint del colector
 ```
 	export OTEL_SERVICE_NAME=service-b
 	export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
 ```
-7.- Inicializa el servicio
+8.- Inicializa el servicio
 ```
         uvicorn app.service_b.main:app --port 8001
 ```
-8.- Abre otra terminal y haz lo mismo pero cambia el nombre del servicio
+9.- Abre otra terminal y haz lo mismo pero cambia el nombre del servicio
 ```
 	export OTEL_SERVICE_NAME=service-a
     export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
 	uvicorn app.service_a.main:app --port 8000
 ```
 
-9.- Corrige el error del collector:
+10.- Corrige el error del collector:
 
-10.- Reinicia el collector:
+11.- Reinicia el collector:
 	docker rm -f otel-collector
 
-11.- Inicia de nuevo
+12.- Inicia de nuevo
 
-12.- Debes tener dos terminales, una con servicio a corriendo otra con servicio b y en una tercera haz pruebas lanzando un curl
+13.- Debes tener dos terminales, una con servicio a corriendo otra con servicio b y en una tercera haz pruebas lanzando un curl
 ```
 	curl http://localhost:8000/start
 
