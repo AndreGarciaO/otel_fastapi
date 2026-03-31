@@ -9,9 +9,10 @@
 ## Instrucciones
 
 1.- Crear un ambiente virtual
-  ```
+
+    ```
 	python3 -m venv venv
-```
+    ```
 
 2.- Descarga el repositorio
 
@@ -53,7 +54,7 @@
 8.- Abre otra terminal y haz lo mismo pero cambia el nombre del servicio
 ```
 	export OTEL_SERVICE_NAME=service-a
-        export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
+    export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
 	uvicorn app.service_a.main:app --port 8000
 ```
 
@@ -69,3 +70,4 @@
 	curl http://localhost:8000/start
 
 ```
+13.- Verifica en tu ambiente de Dynatrace que la telemetria llego
