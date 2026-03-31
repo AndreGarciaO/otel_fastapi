@@ -4,7 +4,7 @@
 
 * Ambiente de Dynatrace 
 * Endpoint de Otel Ej. /api/v2/otlp
-* Api Token con permisos de otel
+* Api Token con permisos de Ingest OpenTelemetry Traces, Ingest logs e Ingest Metrics
 
 ## Instrucciones
 
@@ -16,6 +16,7 @@
 2.- Descarga el repositorio
 
 3.- Instala las dependencias con el siguiente comando:
+
 	  ```
     pip install -r requirements.txt
     ```
