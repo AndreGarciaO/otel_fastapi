@@ -35,8 +35,8 @@ pip install -r requirements.txt
 5.- Exporta las variables del tenant y su token
 
 ```
-	export DT_ENDPOINT=
-	export DT_API_TOKEN=
+	export DT_ENDPOINT=<Your-env-url>/api/v2/otlp
+	export DT_API_TOKEN=<Your-env-token>
 ```
 
 6.- Levanta tu collector:
