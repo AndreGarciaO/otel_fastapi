@@ -9,18 +9,16 @@
 ## Instrucciones
 
 1.- Crear un ambiente virtual
-
-    ```
-	python3 -m venv venv
-    ```
+```
+python3 -m venv venv
+```
 
 2.- Descarga el repositorio
 
 3.- Instala las dependencias con el siguiente comando:
-
-	  ```
-    pip install -r requirements.txt
-    ```
+```
+pip install -r requirements.txt
+```
 
 4.- Exporta las variables del tenant y su token
 
