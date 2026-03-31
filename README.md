@@ -12,8 +12,15 @@
 ```
 python3 -m venv venv
 ```
+1.1.- Si no tienes el paquete venv instalalo con el siguiente comando
+```
+sudo apt-get install python3-virtualenv
+```
 
 2.- Descarga el repositorio
+```
+git clone https://github.com/AndreGarciaO/otel_fastapi.git
+```
 
 3.- Instala las dependencias con el siguiente comando:
 ```
