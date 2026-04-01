@@ -1,45 +1,55 @@
 # otel_fastapi
 
-## Prerrequisitos
+## Prerrequisitos:
 
-* Ambiente de Dynatrace 
-* Endpoint de Otel Ej. /api/v2/otlp
-* Api Token con permisos de Ingest OpenTelemetry Traces, Ingest logs e Ingest Metrics
+* Ambiente de Dynatrace.
+* URL de tu ambiente de Dynatrace, considerando el endpoint de Otel (/api/v2/otlp).
+* Api Token con permisos de Ingest OpenTelemetry Traces, Ingest logs e Ingest Metrics.
+
+#### Recomendacion de OS y herramientas
+* Las instrucciones estan basadas en un sistema operativo basado en linux, asi como tambien contemplan el uso de docker y git.
+* La aplicacion esta hecha en python por lo que tambien se recomienda la instalación de python antes de iniciar.
 
 ## Instrucciones
 
-1.- Crear un ambiente virtual
+1.- Abre una terminal y crea una carpeta dentro de la localidad de tu preferencia. Ya creada entra a esta para trabajar los siguientes pasos en un mismo folder.
+```
+mkdir ejercicio_otel_python
+```
+
+2.- Dentro de la carpeta creada en el paso anterior crea un entorno virtual de python.
 ```
 python3 -m venv venv
 ```
-1.1.- Si no tienes el paquete venv instalalo con el siguiente comando
-```
-sudo apt-get install python3-virtualenv
-```
+> 2.1.- Si no tienes el paquete venv instalado, puedes instalarlo con el siguiente comando:
+	```
+	sudo apt-get install python3-virtualenv
+	```
+> 
 
-2.- Descarga el repositorio
-```
-git clone https://github.com/AndreGarciaO/otel_fastapi.git
-```
-
-3.- Active tu venv con el siguiente comando
+3.- Activa tu venv con el siguiente comando:
 ```
 source venv/bin/activate
 ```
 
-4.- Instala las dependencias con el siguiente comando:
+4.- Descarga el repositorio.
+```
+git clone https://github.com/AndreGarciaO/otel_fastapi.git
+```
+
+5.- Accede a la carpeta del repositorio clonado e instala las dependencias del proyecto con el siguiente comando:
 ```
 pip install -r requirements.txt
 ```
 
-5.- Exporta las variables del tenant y su token
+6.- Define la url de tu tenant y tu token como variables de entorno dentro de tu terminal.
 
 ```
 	export DT_ENDPOINT=<Your-env-url>/api/v2/otlp
 	export DT_API_TOKEN=<Your-env-token>
 ```
 
-6.- Levanta tu collector:
+7.- Levanta el collector de Dynatrace como un contenedor:
 ```
 	docker run -d \
   --name otel-collector \
@@ -51,33 +61,68 @@ pip install -r requirements.txt
   dynatrace/dynatrace-otel-collector:latest
 
 ```
+> El comando de docker run se debe ejecutar estando dentro de la carpeta del repositorio descargado, ya que este comando depende de la existencia del archivo de configuracion del collector
+>
 
-7.- En una consola exporta las variables del nombre del servicio y el endpoint del colector
+7.- Valida que tu collector esta corriendo de manera exitosa con el siguiente comando:
+```
+	docker ps
+```
+
+8.- Abre una terminal nueva y en esta exporta las variables del nombre del servicio b y la del endpoint del exporter de otel.
 ```
 	export OTEL_SERVICE_NAME=service-b
 	export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
 ```
-8.- Inicializa el servicio
+>El endpoint del exporter es localhost ya que nuestro colector este desplegado dentro de la misma maquina como contenedor.
+>
+9.- Inicializa el servicio b
 ```
         uvicorn app.service_b.main:app --port 8001
 ```
-9.- Abre otra terminal y haz lo mismo pero cambia el nombre del servicio, asegurate de inciar el venv en la nueva terminal.
+10.- Abre otra terminal y exporta las variables del nombre del servicio a y la del endpoint del exporter de otel.
 ```
 	export OTEL_SERVICE_NAME=service-a
     export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
-	uvicorn app.service_a.main:app --port 8000
 ```
 
-10.- Corrige el error del collector:
+10.- Inicializa el servicio a
+```
+        uvicorn app.service_a.main:app --port 8000
+```
+11.- En este punto debes tener abiertas tres terminales:
+* Terminal 1 - Donde se desplego el collector.
+* Terminal 2 - Donde se inicializo servicio b.
+* Terminal 3 - Donde se inicializo servicio a.
 
-11.- Reinicia el collector:
+12.- En terminal 1 ejecuta el llamado al servicio a utilizando curl:
+```
+       curl http://localhost:8000/start
+```
+13.- Al ejecutar el curl, notaras en la terminal 2 y terminal 3 que tanto servicio a como servicio b estan arrojando una excepcion. La excepcion se debe a un error en el archivo de configuración del collector.
+
+14.- Corrige el error del collector.
+
+15.- Una vez corregido el error en el archivo de configuración del collector deten y elimina el contenedor del collector en la terminal 1.
+```
 	docker rm -f otel-collector
-
-12.- Inicia de nuevo
-
-13.- Debes tener dos terminales, una con servicio a corriendo otra con servicio b y en una tercera haz pruebas lanzando un curl
 ```
-	curl http://localhost:8000/start
-
+16.- Deten el servicio a y el servicio b en sus respectivas terminales (2 y 3) ejecutando el comando:
 ```
-13.- Verifica en tu ambiente de Dynatrace que la telemetria llego
+ctrl + c
+```
+17.- Inicializa un nuevo contenedor del collector usando el comando del paso 7 en la terinal 1.
+
+18.-Inicializa nuevamente los servicios a y b en sus respectivas terminales (2 y 3) ejecutando los siguientes comandos:
+```
+ uvicorn app.service_b.main:app --port 8001
+ uvicorn app.service_a.main:app --port 8000
+```
+
+19.- En terminal 1 ejecuta el llamado al servicio a utilizando curl:
+```
+       curl http://localhost:8000/start
+```
+>En este punto ya no deberiamos ver excepciones en servicio a y b.
+>
+20.- Verifica en tu ambiente de Dynatrace que son visibles servicios a y b y sus respectivas trazas.
