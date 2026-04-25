@@ -12,10 +12,11 @@
 
 ## Instrucciones
 
-1.- Abre una terminal y crea una carpeta dentro de la localidad de tu preferencia. Ya creada entra a esta para trabajar los siguientes pasos en un mismo folder.
+1.- Abre una terminal y crea una carpeta dentro de la localidad de tu preferencia. 
 ```
 mkdir ejercicio_otel_python
 ```
+Ya creada entra a esta para trabajar los siguientes pasos en un mismo folder.
 
 2.- Dentro de la carpeta creada en el paso anterior crea un entorno virtual de python.
 ```
