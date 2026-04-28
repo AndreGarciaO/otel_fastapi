@@ -70,60 +70,62 @@ pip install -r requirements.txt
 	docker ps
 ```
 
-8.- Abre una terminal nueva y en esta exporta las variables del nombre del servicio b y la del endpoint del exporter de otel.
+8.- Abre una terminal nueva, cambia de directorio a la carpeta creada para el ejercicio y activa el venv en esta nueva terminal.
+
+9.- Entra en esta nueva terminal a la carpeta del repositorio descargado, y en esta exporta las variables del nombre del servicio b y la del endpoint del exporter de otel.
 ```
 	export OTEL_SERVICE_NAME=service-b
 	export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
 ```
 >El endpoint del exporter es localhost ya que nuestro colector este desplegado dentro de la misma maquina como contenedor.
 >
-9.- Inicializa el servicio b
+10.- Inicializa el servicio b
 ```
         uvicorn app.service_b.main:app --port 8001
 ```
-10.- Abre otra terminal y exporta las variables del nombre del servicio a y la del endpoint del exporter de otel.
+11.- Abre otra terminal y repite el paso 8 en esta nueva termianl para despues exportar las variables del nombre del servicio a y la del endpoint del exporter de otel.
 ```
 	export OTEL_SERVICE_NAME=service-a
     export OTEL_EXPORTER_ENDPOINT=http://localhost:4318
 ```
 
-10.- Inicializa el servicio a
+12.- Inicializa el servicio a
 ```
         uvicorn app.service_a.main:app --port 8000
 ```
-11.- En este punto debes tener abiertas tres terminales:
+13.- En este punto debes tener abiertas tres terminales:
 * Terminal 1 - Donde se desplego el collector.
 * Terminal 2 - Donde se inicializo servicio b.
 * Terminal 3 - Donde se inicializo servicio a.
 
-12.- En terminal 1 ejecuta el llamado al servicio a utilizando curl:
+14.- En terminal 1 ejecuta el llamado al servicio a utilizando curl:
 ```
        curl http://localhost:8000/start
 ```
-13.- Al ejecutar el curl, notaras en la terminal 2 y terminal 3 que tanto servicio a como servicio b estan arrojando una excepcion. La excepcion se debe a un error en el archivo de configuración del collector.
+15.- Al ejecutar el curl, notaras en la terminal 2 y terminal 3 que tanto servicio a como servicio b estan arrojando una excepcion. La excepcion se debe a un error en el archivo de configuración del collector.
 
-14.- Corrige el error del collector.
+16.- Corrige el error del collector.
 
-15.- Una vez corregido el error en el archivo de configuración del collector deten y elimina el contenedor del collector en la terminal 1.
+17.- Una vez corregido el error en el archivo de configuración del collector deten y elimina el contenedor del collector en la terminal 1.
 ```
 	docker rm -f otel-collector
 ```
-16.- Deten el servicio a y el servicio b en sus respectivas terminales (2 y 3) ejecutando el comando:
+18.- Deten el servicio a y el servicio b en sus respectivas terminales (2 y 3) ejecutando el comando:
 ```
 ctrl + c
 ```
-17.- Inicializa un nuevo contenedor del collector usando el comando del paso 7 en la terinal 1.
+19.- Inicializa un nuevo contenedor del collector usando el comando del paso 7 en la terinal 1.
 
-18.-Inicializa nuevamente los servicios a y b en sus respectivas terminales (2 y 3) ejecutando los siguientes comandos:
+20.-Inicializa nuevamente los servicios a y b en sus respectivas terminales (2 y 3) ejecutando los siguientes comandos:
 ```
  uvicorn app.service_b.main:app --port 8001
  uvicorn app.service_a.main:app --port 8000
 ```
 
-19.- En terminal 1 ejecuta el llamado al servicio a utilizando curl:
+21.- En terminal 1 ejecuta el llamado al servicio a utilizando curl:
 ```
        curl http://localhost:8000/start
 ```
 >En este punto ya no deberiamos ver excepciones en servicio a y b.
 >
-20.- Verifica en tu ambiente de Dynatrace que son visibles servicios a y b y sus respectivas trazas.
+22.- Verifica en tu ambiente de Dynatrace que son visibles servicios a y b y sus respectivas trazas.
